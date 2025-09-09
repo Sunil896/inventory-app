@@ -34,9 +34,8 @@
       <div id="adminControls">
         <form id="itemForm">
           <input type="text" id="itemName" placeholder="Item Name" required>
-          <input type="number" id="itemQty" placeholder="Quantity" required>
-          <input type="number" id="itemPrice" placeholder="Price" required>
-          <input type="text" id="itemCategory" placeholder="Category" required>
+          <input type="text" id="itemPrice" placeholder="Category" required>
+          <input type="number" id="itemCategory" placeholder="Total Stock available" required>
           <button type="submit">Add Item</button>
         </form>
       </div>
@@ -48,11 +47,9 @@
       <table id="inventoryTable">
         <thead>
           <tr>
-            <th onclick="sortTable(0)">Name</th>
-            <th onclick="sortTable(1)">Quantity</th>
-            <th onclick="sortTable(2)">Price</th>
-            <th onclick="sortTable(3)">Category</th>
-            <th onclick="sortTable(4)">Total</th>
+            <th onclick="sortTable(0)">Item Name</th>
+            <th onclick="sortTable(1)">Category</th>
+            <th onclick="sortTable(4)">Total Stock available</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -71,10 +68,9 @@
               <th>Timestamp</th>
               <th>User</th>
               <th>Action</th>
-              <th>Item</th>
-              <th>Qty</th>
-              <th>Price</th>
+              <th>Item Name</th>
               <th>Category</th>
+              <th>Total stock availabe</th>
               <th>Row</th>
             </tr>
           </thead>
