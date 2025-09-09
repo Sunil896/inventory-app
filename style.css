@@ -1,38 +1,66 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-}
-.container {
-  max-width: 900px;
-  margin: 20px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
+  margin: 0;
   padding: 20px;
-  background: #fff;
+  color: #333;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #4CAF50;
+}
+
+#adminControls {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+#adminControls input {
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 8px;
 }
+
+#adminControls button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#adminControls button:hover {
+  background: #43a047;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
-table, th, td {
-  border: 1px solid #ccc;
-}
+
 th, td {
-  padding: 8px;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
   text-align: center;
 }
+
 th {
-  cursor: pointer;
-  background: #eee;
-}
-form input {
-  margin: 5px;
-  padding: 6px;
-}
-button {
-  padding: 6px 12px;
-  margin: 5px;
-}
-#logsSection {
-  margin-top: 30px;
+  background: #4CAF50;
+  color: white;
 }
