@@ -2,237 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Inventory App</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    form {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
-    input {
-      padding: 10px;
-      flex: 1;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #4CAF50;
-      color: #fff;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #45a049;
-    }
-    #search {
-      margin: 10px 0;
-      padding: 10px;
-      width: 100%;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: center;
-    }
-    th {
-      background: #f2f2f2;
-      cursor: pointer;
-      user-select: none;
-    }
-    th:hover {
-      background: #e0e0e0;
-    }
-    .action-btn {
-      padding: 6px 12px;
-      margin: 2px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .edit {
-      background: #2196F3;
-      color: #fff;
-    }
-    .delete {
-      background: #f44336;
-      color: #fff;
-    }
-    #exportBtn {
-      margin-top: 15px;
-      background: #ff9800;
-    }
-    #exportBtn:hover {
-      background: #e68900;
-    }
-  </style>
+  <title>Inventory Management</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </head>
 <body>
   <div class="container">
     <h1>Inventory Management</h1>
-    
-    <!-- Add Form -->
-    <form id="inventory-form">
-      <input type="text" id="itemName" placeholder="Item Name" required>
-      <input type="number" id="itemQty" placeholder="Quantity" required>
-      <input type="number" id="itemPrice" placeholder="Price" required>
-      <button type="submit">Add Item</button>
-    </form>
 
-    <!-- Search Bar -->
-    <input type="text" id="search" placeholder="Search by item name...">
+    <!-- Google Login -->
+    <div id="loginSection">
+      <div id="g_id_onload"
+        data-client_id="YOUR_GOOGLE_CLIENT_ID"
+        data-callback="handleCredentialResponse"
+        data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
+    </div>
 
-    <!-- Table -->
-    <table id="inventory-table">
-      <thead>
-        <tr>
-          <th data-column="name">Name ⬍</th>
-          <th data-column="qty">Quantity ⬍</th>
-          <th data-column="price">Price ⬍</th>
-          <th data-column="total">Total Value ⬍</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <!-- App -->
+    <div id="appSection" style="display:none;">
 
-    <!-- Export Button -->
-    <button id="exportBtn">⬇ Export Inventory (CSV)</button>
+      <!-- Dashboard -->
+      <div id="dashboard">
+        <p><strong>Total Items:</strong> <span id="totalItems">0</span></p>
+        <p><strong>Total Stock Value:</strong> $<span id="totalValue">0</span></p>
+      </div>
+
+      <!-- Admin Controls -->
+      <div id="adminControls">
+        <form id="itemForm">
+          <input type="text" id="itemName" placeholder="Item Name" required>
+          <input type="number" id="itemQty" placeholder="Quantity" required>
+          <input type="number" id="itemPrice" placeholder="Price" required>
+          <input type="text" id="itemCategory" placeholder="Category" required>
+          <button type="submit">Add Item</button>
+        </form>
+      </div>
+
+      <!-- Filters -->
+      <input type="text" id="searchInput" placeholder="Search items...">
+
+      <!-- Table -->
+      <table id="inventoryTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable(0)">Name</th>
+            <th onclick="sortTable(1)">Quantity</th>
+            <th onclick="sortTable(2)">Price</th>
+            <th onclick="sortTable(3)">Category</th>
+            <th onclick="sortTable(4)">Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+
+      <!-- Export -->
+      <button onclick="exportTableToCSV()">Export CSV</button>
+
+      <!-- Logs -->
+      <div id="logsSection" style="display:none;">
+        <h2>Action Logs</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>User</th>
+              <th>Action</th>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Category</th>
+              <th>Row</th>
+            </tr>
+          </thead>
+          <tbody id="logTableBody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
-
-  <script>
-    const form = document.getElementById('inventory-form');
-    const tableBody = document.querySelector('#inventory-table tbody');
-    const searchInput = document.getElementById('search');
-    const exportBtn = document.getElementById('exportBtn');
-    let items = JSON.parse(localStorage.getItem('inventory')) || [];
-    let sortDirection = {};
-    
-    function saveData() {
-      localStorage.setItem('inventory', JSON.stringify(items));
-    }
-
-    function renderTable(filteredItems = items) {
-      tableBody.innerHTML = '';
-      filteredItems.forEach((item, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${item.name}</td>
-          <td>${item.qty}</td>
-          <td>$${item.price}</td>
-          <td>$${(item.qty * item.price).toFixed(2)}</td>
-          <td>
-            <button class="action-btn edit" onclick="editItem(${index})">Edit</button>
-            <button class="action-btn delete" onclick="deleteItem(${index})">Delete</button>
-          </td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('itemName').value.trim();
-      const qty = parseInt(document.getElementById('itemQty').value);
-      const price = parseFloat(document.getElementById('itemPrice').value);
-
-      items.push({ name, qty, price });
-      saveData();
-      renderTable();
-      form.reset();
-    });
-
-    function deleteItem(index) {
-      items.splice(index, 1);
-      saveData();
-      renderTable();
-    }
-
-    function editItem(index) {
-      const item = items[index];
-      document.getElementById('itemName').value = item.name;
-      document.getElementById('itemQty').value = item.qty;
-      document.getElementById('itemPrice').value = item.price;
-      items.splice(index, 1);
-      saveData();
-      renderTable();
-    }
-
-    // Search Functionality
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.toLowerCase();
-      const filtered = items.filter(item => item.name.toLowerCase().includes(query));
-      renderTable(filtered);
-    });
-
-    // Sorting Functionality
-    document.querySelectorAll('th[data-column]').forEach(th => {
-      th.addEventListener('click', () => {
-        const column = th.getAttribute('data-column');
-        sortDirection[column] = !sortDirection[column]; // toggle direction
-        items.sort((a, b) => {
-          let valA = (column === 'total') ? a.qty * a.price : a[column];
-          let valB = (column === 'total') ? b.qty * b.price : b[column];
-          
-          if (typeof valA === 'string') {
-            valA = valA.toLowerCase();
-            valB = valB.toLowerCase();
-          }
-          if (valA > valB) return sortDirection[column] ? 1 : -1;
-          if (valA < valB) return sortDirection[column] ? -1 : 1;
-          return 0;
-        });
-        renderTable();
-      });
-    });
-
-    // Export Functionality
-    exportBtn.addEventListener('click', () => {
-      let csv = "Name,Quantity,Price,Total Value\n";
-      items.forEach(item => {
-        csv += `${item.name},${item.qty},${item.price},${(item.qty * item.price).toFixed(2)}\n`;
-      });
-      
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "inventory.csv";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    });
-
-    renderTable();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
