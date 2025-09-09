@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxXkZ0t1aGjXE4dm9Bka5PhRipARnBq6y06Nzh69nc/dev";
+const API_URL = "https://script.google.com/macros/s/AKfycbwTGSgFAXuOrRXt402rIca6b15Iwh9pw1M9StsZnnofBfzuVLxbmB64vjZHKhm3lDqY/exec";
 let currentUser = null;
 let isAdmin = false;
 
