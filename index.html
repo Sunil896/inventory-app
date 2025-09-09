@@ -2,83 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Inventory Management</title>
+  <title>MURL Intranet</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Inventory Management</h1>
+  <div id="loginSection">
+    <h2>Login to Inventory</h2>
+    <div id="g_id_onload"
+         data-client_id="1073605638128-0lnmgnt0ijrbaol9llc8hkp1pjkoairc.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"></div>
+    <div class="g_id_signin" data-type="standard"></div>
+  </div>
 
-    <!-- Google Login -->
-    <div id="loginSection">
-      <div id="g_id_onload"
-        data-client_id="1073605638128-0lnmgnt0ijrbaol9llc8hkp1pjkoairc.apps.googleusercontent.com"
-        data-callback="handleCredentialResponse"
-        data-auto_prompt="false">
-      </div>
-      <div class="g_id_signin" data-type="standard"></div>
-    </div>
+  <div id="appSection" style="display:none;">
+    <header>
+      <h1>📦 Inventory Manager</h1>
+      <p>Track items easily with Google Sheets</p>
+    </header>
 
-    <!-- App -->
-    <div id="appSection" style="display:none;">
+    <section id="adminControls">
+      <h2>Add Item</h2>
+      <input type="text" id="name" placeholder="Item Name">
+      <input type="text" id="category" placeholder="Category">
+      <input type="number" id="stock" placeholder="Total Stock">
+      <button onclick="addItem()">➕ Add Item</button>
+    </section>
 
-      <!-- Dashboard -->
-      <div id="dashboard">
-        <p><strong>Total Items:</strong> <span id="totalItems">0</span></p>
-        <p><strong>Total Stock Value:</strong> $<span id="totalValue">0</span></p>
-      </div>
-
-      <!-- Admin Controls -->
-      <div id="adminControls">
-        <form id="itemForm">
-          <input type="text" id="itemName" placeholder="Item Name" required>
-          <input type="text" id="itemPrice" placeholder="Category" required>
-          <input type="number" id="itemCategory" placeholder="Total Stock available" required>
-          <button type="submit">Add Item</button>
-        </form>
-      </div>
-
-      <!-- Filters -->
-      <input type="text" id="searchInput" placeholder="Search items...">
-
-      <!-- Table -->
-      <table id="inventoryTable">
+    <section>
+      <h2>Current Inventory</h2>
+      <table>
         <thead>
           <tr>
-            <th onclick="sortTable(0)">Item Name</th>
-            <th onclick="sortTable(1)">Category</th>
-            <th onclick="sortTable(4)">Total Stock available</th>
-            <th>Actions</th>
+            <th>Item Name</th>
+            <th>Category</th>
+            <th>Total Stock</th>
           </tr>
         </thead>
-        <tbody id="tableBody"></tbody>
+        <tbody id="inventoryTable"></tbody>
       </table>
-
-      <!-- Export -->
-      <button onclick="exportTableToCSV()">Export CSV</button>
-
-      <!-- Logs -->
-      <div id="logsSection" style="display:none;">
-        <h2>Action Logs</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>User</th>
-              <th>Action</th>
-              <th>Item Name</th>
-              <th>Category</th>
-              <th>Total stock availabe</th>
-              <th>Row</th>
-            </tr>
-          </thead>
-          <tbody id="logTableBody"></tbody>
-        </table>
-      </div>
-    </div>
+    </section>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
