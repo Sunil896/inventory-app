@@ -1,5 +1,5 @@
 // ---------- script.js ----------
-const API_URL = "PASTE_YOUR_SCRIPT_WEB_APP_URL_HERE"; // <-- set this
+const API_URL = "https://script.google.com/macros/s/AKfycbyOOUbbFN_dBlKqBU3EFah3kxqdwvlT6VY_Fq4KoETqhRpCOmidD98uX5hIwA_GeFrw/exec"; // <-- set this
 let expenses = []; // full 2D array from sheet (including header row)
 let chartProject, chartItemType;
 
