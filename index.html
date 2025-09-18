@@ -1,48 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>MURL Intranet</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+  <meta charset="utf-8" />
+  <title>Expense Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div id="loginSection">
-    <h2>Login to MURL Intranet</h2>
-    <div id="g_id_onload"
-         data-client_id="1073605638128-0lnmgnt0ijrbaol9llc8hkp1pjkoairc.apps.googleusercontent.com"
-         data-callback="handleCredentialResponse"></div>
-    <div class="g_id_signin" data-type="standard"></div>
+  <div id="loginScreen" class="centerCard">
+    <h2>Enter 4-digit code</h2>
+    <input id="codeInput" maxlength="4" placeholder="1234" />
+    <button id="codeBtn">Enter</button>
+    <p id="codeMsg" class="muted"></p>
   </div>
 
-  <div id="appSection" style="display:none;">
-    <header>
-      <h1>📦 Inventory Manager</h1>
-      <p>Track items easily with Google Sheets</p>
+  <div id="dashboard" class="hidden">
+    <header class="topbar">
+      <h1>Expense Dashboard</h1>
+      <div class="topRight">
+        <button id="logoutBtn">Logout</button>
+      </div>
     </header>
 
-    <section id="adminControls">
-      <h2>Add Item</h2>
-      <input type="text" id="name" placeholder="Item Name">
-      <input type="text" id="category" placeholder="Category">
-      <input type="number" id="stock" placeholder="Total Stock">
-      <button onclick="addItem()">➕ Add Item</button>
-    </section>
+    <main class="grid">
+      <section class="card">
+        <h3>By Project</h3>
+        <canvas id="projectChart"></canvas>
+      </section>
 
-    <section>
-      <h2>Current Inventory</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Item Name</th>
-            <th>Category</th>
-            <th>Total Stock</th>
-          </tr>
-        </thead>
-        <tbody id="inventoryTable"></tbody>
-      </table>
-    </section>
+      <section class="card">
+        <h3>By Item Type</h3>
+        <canvas id="itemTypeChart"></canvas>
+      </section>
+
+      <section class="card wide">
+        <h3>All Expenses</h3>
+        <div class="tableWrap">
+          <table id="expenseTable">
+            <thead>
+              <tr>
+                <th>Date</th><th>Item Type</th><th>Item</th><th>Vendor</th><th>Amount</th><th>Invoice No.</th><th>Project</th><th>Payment Status</th><th>Invoice Submitted To</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Floating Add Button -->
+    <button id="addBtn" class="fab">＋</button>
+
+    <!-- Modal Form -->
+    <div id="modal" class="modal hidden">
+      <div class="modalContent">
+        <h3>Add Expense</h3>
+        <div class="formRow"><label>Date</label><input id="fDate" type="date"></div>
+        <div class="formRow"><label>Item Type</label><input id="fItemType" placeholder="e.g., Equipment"></div>
+        <div class="formRow"><label>Item</label><input id="fItem" placeholder="Item name"></div>
+        <div class="formRow"><label>Vendor detail</label><input id="fVendor" placeholder="Vendor"></div>
+        <div class="formRow"><label>Amount</label><input id="fAmount" type="number" step="0.01" placeholder="0.00"></div>
+        <div class="formRow"><label>Invoice no.</label><input id="fInvoice" placeholder="INV123"></div>
+        <div class="formRow"><label>Project</label><input id="fProject" placeholder="Project code"></div>
+        <div class="formRow"><label>Payment Status</label>
+          <select id="fPaymentStatus">
+            <option>Pending</option>
+            <option>Paid</option>
+            <option>Overdue</option>
+          </select>
+        </div>
+        <div class="formRow"><label>Invoice submitted to</label><input id="fSubmitted" placeholder="Name/Dept"></div>
+
+        <div class="modalActions">
+          <button id="saveBtn">Save</button>
+          <button id="cancelBtn" class="secondary">Cancel</button>
+        </div>
+        <p id="modalMsg" class="muted"></p>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
