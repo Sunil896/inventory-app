@@ -1,66 +1,33 @@
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f0f2f5;
-  margin: 0;
-  padding: 20px;
-  color: #333;
-}
+:root{--bg:#f4f7fb;--card:#ffffff;--accent:#0066cc;--muted:#666;}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial;background:var(--bg);color:#222}
+.centerCard{max-width:380px;margin:8vh auto;padding:28px;background:var(--card);border-radius:12px;box-shadow:0 6px 20px rgba(20,30,50,.07);text-align:center}
+.centerCard input{width:60%;padding:10px;font-size:18px;margin:12px 0;border-radius:8px;border:1px solid #ddd}
+.centerCard button{background:var(--accent);color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer}
+.muted{color:var(--muted)}
+.hidden{display:none}
 
-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
+/* Dashboard */
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 22px;background:white;box-shadow:0 4px 10px rgba(0,0,0,.04)}
+.topbar h1{margin:0;font-size:20px}
+.topRight button{background:#eee;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;padding:22px;max-width:1100px;margin:18px auto}
+.card{padding:14px;background:var(--card);border-radius:12px;box-shadow:0 6px 20px rgba(20,30,50,.04)}
+.card.wide{grid-column:1/ -1}
+.tableWrap{max-height:380px;overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
+th{background:#f7fbff;color:#333;position:sticky;top:0}
 
-h1 {
-  font-size: 2rem;
-  color: #4CAF50;
-}
+/* Floating button */
+.fab{position:fixed;right:26px;bottom:26px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:white;font-size:28px;border:0;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.15)}
 
-#adminControls {
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  margin-bottom: 30px;
-}
-
-#adminControls input {
-  margin: 5px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-#adminControls button {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-#adminControls button:hover {
-  background: #43a047;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-th, td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
-}
-
-th {
-  background: #4CAF50;
-  color: white;
-}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center}
+.modalContent{width:460px;background:white;padding:18px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.formRow{display:flex;flex-direction:column;margin-bottom:8px}
+.formRow label{font-size:12px;color:var(--muted);margin-bottom:4px}
+.formRow input, .formRow select{padding:8px;border-radius:8px;border:1px solid #ddd}
+.modalActions{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
+.modalActions .secondary{background:#f0f0f0;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+.modalActions button{background:var(--accent);color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
